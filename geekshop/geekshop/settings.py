@@ -121,6 +121,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+FILE_PRODUCTS =  os.path.join(BASE_DIR, 'mainapp/templates/mainapp/fixtures') # Путь к вайлу products.json
+
 STATICFILES_DIRS = (
 
     os.path.join(BASE_DIR, 'static'),

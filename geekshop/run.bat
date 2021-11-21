@@ -1,3 +1,3 @@
 @echo OFF
-d:\GEEK-Django\venv\Scripts\activate.bat && d:\geek-django\geekshop\manage.py runserver
+g:\GEEK-Django\venv\Scripts\activate.bat && g:\geek-django\geekshop\manage.py runserver
 pause
