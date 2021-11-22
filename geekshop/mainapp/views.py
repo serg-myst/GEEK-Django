@@ -4,6 +4,8 @@ import json # модуль для преобразования текста в j
 import os # надо определить абсолютный путь к файлу products.json (через относительный не понимает. Говорит нет такого файла.).
 # Для этого в settings.py добавил путь FILE_PRODUCTS
 
+from datetime import datetime
+
 # Create your views here.
 
 
