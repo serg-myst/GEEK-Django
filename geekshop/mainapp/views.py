@@ -4,26 +4,55 @@ import json # модуль для преобразования текста в j
 import os # надо определить абсолютный путь к файлу products.json (через относительный не понимает. Говорит нет такого файла.).
 # Для этого в settings.py добавил путь FILE_PRODUCTS
 
-from datetime import datetime
+from mainapp.models import ProductCategory, Products
 
 # Create your views here.
+main_menu = [
+    {'href': 'index', 'name': 'домой'},
+    {'href': 'products', 'name': 'продукты'},
+    {'href': 'contact', 'name': 'контакты'},
+]
+
+'''
+links_menu = [
+    {'href': 'products_all', 'name': 'все'},
+    {'href': 'product_home', 'name': 'дом'},
+    {'href': 'product_office', 'name': 'офис'},
+    {'href': 'product_modern', 'name': 'модерн'},
+    {'href': 'product_classic', 'name': 'классика'},
+]
+'''
 
 
 def index(request):
-
     context = {
         'title': 'Магазин',
+        'main_menu': main_menu,
     }
 
     return render(request, 'mainapp/index.html', context)
 
 
 def products(request):
-    return render(request, 'mainapp/products.html', get_products())
+
+    links_menu = ProductCategory.objects.all().order_by('name')
+    all_products = Products.objects.all()
+
+    context = {
+        'main_menu': main_menu,
+        'links_menu': links_menu,
+        'products': all_products,
+    }
+
+    return render(request, 'mainapp/products.html', context)
 
 
 def contact(request):
-    return render(request, 'mainapp/contact.html')
+    context = {
+        'main_menu': main_menu,
+    }
+
+    return render(request, 'mainapp/contact.html', context)
 
 
 def get_products():
