@@ -22,8 +22,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name = 'index'),
-    path('products', views.products, name = 'products'),
-    path('contact', views.contact, name = 'contact'),
+    path('products/', views.products, name = 'products'),
+    path('products/<int:category_id>/', views.show_category_products, name = 'categories'),
+    path('contact/', views.contact, name = 'contact'),
 ]
 
 

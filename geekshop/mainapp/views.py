@@ -44,7 +44,7 @@ def products(request):
         'products': all_products,
     }
 
-    return render(request, 'mainapp/products.html', context)
+    return render(request, 'mainapp/products.html', context = context)
 
 
 def contact(request):
@@ -53,6 +53,24 @@ def contact(request):
     }
 
     return render(request, 'mainapp/contact.html', context)
+
+
+def show_category_products(request, category_id):
+
+    links_menu = ProductCategory.objects.all().order_by('name')
+
+    if category_id == 3: # пока привяжимся к id категории "ВСЕ"
+        all_products = Products.objects.all()
+    else:
+        all_products = Products.objects.filter(category=category_id)
+
+    context = {
+        'main_menu': main_menu,
+        'links_menu': links_menu,
+        'products': all_products,
+    }
+
+    return render(request, 'mainapp/products.html', context = context)
 
 
 def get_products():
