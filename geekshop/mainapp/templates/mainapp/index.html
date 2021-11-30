@@ -16,11 +16,7 @@
 		<div class="slider">
 			<div class="header clearfix">
 				<a href="index.html" class="logo"></a>
-				<ul class="menu">
-					<li><a href="{% url 'index' %}" class="active">домой</a></li>
-					<li><a href="{% url 'products' %}">продукты</a></li>
-					<li><a href="{% url 'contact' %}">контакты</a></li>
-				</ul>
+				{% include 'mainapp/includes/inc_main_menu.html' %}
 				<a href="#" class="search"></a>
 			</div>
 			<div class="text-slider">
