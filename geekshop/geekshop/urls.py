@@ -18,12 +18,14 @@ from django.urls import path
 from mainapp import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name = 'index'),
     path('products/', views.products, name = 'products'),
     path('products/<int:category_id>/', views.show_category_products, name = 'categories'),
+    path('auth/', include('authapp.urls', namespace='auth')),
     path('contact/', views.contact, name = 'contact'),
 ]
 
