@@ -1,7 +1,7 @@
 <ul class="links-menu">
     {% for link in links_menu %}
      <li>
-        <a href = "{% url 'categories' link.id %}" class = "{% if request.resolver_match.url_name == link.id %} active {% endif %}">
+        <a href = "{% url 'categories' link.id %}" class = "{% if active_category_id == link.id %}active{% endif %}">
           {{ link.name }}</a>
      </li>
     {% endfor %}

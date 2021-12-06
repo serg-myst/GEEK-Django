@@ -55,11 +55,11 @@ def contact(request):
     return render(request, 'mainapp/contact.html', context)
 
 
-def show_category_products(request, category_id):
+def show_category_products(request, category_id=None):
 
     links_menu = ProductCategory.objects.all().order_by('name')
 
-    if category_id == 3: # пока привяжимся к id категории "ВСЕ"
+    if category_id in (3, None): # пока привяжимся к id категории "ВСЕ"
         all_products = Products.objects.all()
     else:
         all_products = Products.objects.filter(category=category_id)
@@ -68,6 +68,7 @@ def show_category_products(request, category_id):
         'main_menu': main_menu,
         'links_menu': links_menu,
         'products': all_products,
+        'active_category_id': category_id, # передаем для установки активного класса - active
     }
 
     return render(request, 'mainapp/products.html', context = context)

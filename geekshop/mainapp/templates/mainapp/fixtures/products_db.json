@@ -1,0 +1,29 @@
+[
+  {
+   "category": "Стулья",
+   "name": "Стул компьютерный",
+   "short_desc": "Компьютерный стул",
+   "image": "products_images/game_1.jpg",
+   "description": "Компьютерный стул. Удобный. Мягкий",
+   "price": "15999",
+   "quantity": "10"
+  },
+  {
+   "category": "Стулья",
+   "name": "Стул барный",
+   "short_desc": "Барный стул",
+   "image": "products_images/stul-barnyj-porsche-belyj__2__ebb3-ka.jpg",
+   "description": "Барный стул. Удобный. Высокий. Красивый",
+   "price": "7500",
+   "quantity": "15"
+   },
+  {
+   "category": "Диваны",
+   "name": "Диван большой",
+   "short_desc": "Большой диван",
+   "image": "products_images/d96ce958a5d172ca61abfb8ea0424a60.jpg",
+   "description": "Большой мягкий диван. Много разных цветов. Лежи и отдыхай",
+   "price": "18500",
+   "quantity": "2"
+  }
+]
