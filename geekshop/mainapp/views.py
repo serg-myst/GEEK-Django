@@ -1,10 +1,14 @@
 from django.shortcuts import render
-from django.conf import settings # В настройках пропишем путь до файла products.json
-import json # модуль для преобразования текста в json и затем в словарь
-import os # надо определить абсолютный путь к файлу products.json (через относительный не понимает. Говорит нет такого файла.).
+from django.conf import settings  # В настройках пропишем путь до файла products.json
+import json  # модуль для преобразования текста в json и затем в словарь
+import \
+    os  # надо определить абсолютный путь к файлу products.json (через относительный не понимает. Говорит нет такого файла.).
 # Для этого в settings.py добавил путь FILE_PRODUCTS
 
+from basketapp.views import Basket
+
 from mainapp.models import ProductCategory, Products
+import random
 
 # Create your views here.
 main_menu = [
@@ -34,17 +38,33 @@ def index(request):
 
 
 def products(request):
-
     links_menu = ProductCategory.objects.all().order_by('name')
     all_products = Products.objects.all()
+    hot_product = get_hot_product()
+
+    basket = []
+
+    if request.user.is_authenticated:
+        #basket = Basket.objects.filter(user=request.user)
+        total_quantity = Basket.get_quantity(request.user)['total_quantity']
+        total_sum = Basket.get_sum(request.user)['total_sum']
 
     context = {
         'main_menu': main_menu,
         'links_menu': links_menu,
         'products': all_products,
+        'hot_product': hot_product,
+        'total_quantity': total_quantity,
+        'total_sum': total_sum,
     }
 
-    return render(request, 'mainapp/products.html', context = context)
+
+    return render(request, 'mainapp/products.html', context=context)
+
+
+def get_hot_product():
+    products = Products.objects.all()
+    return random.sample(list(products), 1)[0]
 
 
 def contact(request):
@@ -56,29 +76,29 @@ def contact(request):
 
 
 def show_category_products(request, category_id=None):
-
     links_menu = ProductCategory.objects.all().order_by('name')
 
-    if category_id in (3, None): # пока привяжимся к id категории "ВСЕ"
+    if category_id in (3, None):  # пока привяжимся к id категории "ВСЕ"
         all_products = Products.objects.all()
     else:
         all_products = Products.objects.filter(category=category_id)
+
+    hot_product = get_hot_product()
 
     context = {
         'main_menu': main_menu,
         'links_menu': links_menu,
         'products': all_products,
-        'active_category_id': category_id, # передаем для установки активного класса - active
+        'active_category_id': category_id,  # передаем для установки активного класса - active
+        'hot_product': hot_product,
     }
 
-    return render(request, 'mainapp/products.html', context = context)
+    return render(request, 'mainapp/products.html', context=context)
 
 
 def get_products():
-
     filename = os.path.join(settings.FILE_PRODUCTS, 'products.json')
 
     with open(filename, 'r', encoding='utf-8') as f:
         data = json.loads(f.read().replace("'", '"'))
     return data
-
