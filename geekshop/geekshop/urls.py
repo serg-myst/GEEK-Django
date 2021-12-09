@@ -27,6 +27,7 @@ urlpatterns = [
     path('products/<int:category_id>/', views.show_category_products, name = 'categories'),
     path('auth/', include('authapp.urls', namespace='auth')),
     path('contact/', views.contact, name = 'contact'),
+    path('basket/',include('basketapp.urls', namespace='basket'))
 ]
 
 
