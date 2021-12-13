@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings  # В настройках пропишем путь до файла products.json
 import json  # модуль для преобразования текста в json и затем в словарь
 import \
@@ -44,8 +44,11 @@ def products(request):
 
     basket = []
 
+    total_quantity = 0
+    total_sum = 0
+
     if request.user.is_authenticated:
-        #basket = Basket.objects.filter(user=request.user)
+        # basket = Basket.objects.filter(user=request.user)
         total_quantity = Basket.get_quantity(request.user)['total_quantity']
         total_sum = Basket.get_sum(request.user)['total_sum']
 
@@ -58,13 +61,16 @@ def products(request):
         'total_sum': total_sum,
     }
 
-
     return render(request, 'mainapp/products.html', context=context)
 
 
 def get_hot_product():
     products = Products.objects.all()
     return random.sample(list(products), 1)[0]
+
+
+def get_same_products(hot_product):
+    return Products.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)[:3]
 
 
 def contact(request):
@@ -102,3 +108,24 @@ def get_products():
     with open(filename, 'r', encoding='utf-8') as f:
         data = json.loads(f.read().replace("'", '"'))
     return data
+
+
+def get_basket(user):
+    if user.is_authenticated:
+        return Basket.objects.filter(user=user)
+    else:
+        return []
+
+
+def product(request, pk):
+    title = 'продукты'
+    links_menu = ProductCategory.objects.all().order_by('name')
+
+    content = {
+        'title': title,
+        'links_menu': links_menu,
+        'product': get_object_or_404(Products, pk=pk),
+        'basket': get_basket(request.user),
+    }
+
+    return render(request, 'mainapp/product.html', content)

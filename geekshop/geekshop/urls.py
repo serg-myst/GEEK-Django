@@ -22,14 +22,14 @@ from django.conf.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name = 'index'),
-    path('products/', views.products, name = 'products'),
-    path('products/<int:category_id>/', views.show_category_products, name = 'categories'),
+    path('', views.index, name='index'),
+    path('products/', views.products, name='products'),
+    path('products/<int:category_id>/', views.show_category_products, name='categories'),
     path('auth/', include('authapp.urls', namespace='auth')),
-    path('contact/', views.contact, name = 'contact'),
-    path('basket/',include('basketapp.urls', namespace='basket'))
+    path('contact/', views.contact, name='contact'),
+    path('basket/', include('basketapp.urls', namespace='basket')),
+    path('product/<int:pk>', views.product, name='product'),
 ]
 
-
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

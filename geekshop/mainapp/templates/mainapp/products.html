@@ -77,7 +77,7 @@
 					{% for product in products %}
 
 					<div class="block">
-						<a href="{% url 'basket:add' product.pk %}"><img src="/media/{{ product.image }}" width="370px" height="370px" alt="картинка товара">
+						<a href="{% url 'product' product.pk %}"><img src="/media/{{ product.image }}" width="370px" height="370px" alt="картинка товара">
 							<div class="text">
 								<img src="{% static 'img/icon-hover.png' %}" alt="img">
 								<h4>{{ product.name }}</h4>
