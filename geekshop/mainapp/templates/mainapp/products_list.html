@@ -1,0 +1,45 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="links clearfix">
+    <ul class="links-menu">
+         <li>
+             <a href = "{% url 'products' %}">На страницу продуктов</a>
+         </li>
+        <li>
+             <a>{% if active_category_id == 3 %}Все категории{% else %}{{ active_category.name }}{% endif %}</a>
+        </li>
+    </ul>
+
+  <div class="paginator">
+    {% if products.has_previous %}
+    <a href="?page={{ products.previous_page_number }}">
+        <
+    </a>
+    {% endif %}
+    <span class="current">
+      страница {{ products.number }} из {{ products.paginator.num_pages }}
+    </span>
+    {% if products.has_next %}
+    <a href="?page={{ products.next_page_number }}">
+        >
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+{% for product in products %}
+<div class="related-products clearfix">
+<div class="block">
+  <a href="{% url 'product' product.pk %}"><img src="/media/{{ product.image }}" width="370px" height="370px" alt="картинка товара">
+    <div class="text">
+      <img src="{% static 'img/icon-hover.png' %}" alt="img">
+      <h4>{{ product.name }}</h4>
+      <p>{{ product.description }}</p>
+    </div>
+  </a>
+</div>
+</div>
+{% endfor %}
+{% endblock %}
