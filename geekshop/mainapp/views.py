@@ -9,6 +9,7 @@ from basketapp.views import Basket
 
 from mainapp.models import ProductCategory, Products
 import random
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 main_menu = [
@@ -39,7 +40,8 @@ def index(request):
 
 def products(request):
     links_menu = ProductCategory.objects.all().order_by('name')
-    all_products = Products.objects.all()
+    # all_products = Products.objects.all()
+    all_products = Products.objects.filter(is_active=True)
     hot_product = get_hot_product()
 
     basket = []
@@ -52,7 +54,7 @@ def products(request):
         total_quantity = Basket.get_quantity(request.user)['total_quantity']
         total_sum = Basket.get_sum(request.user)['total_sum']
 
-    context = {
+        content = {
         'main_menu': main_menu,
         'links_menu': links_menu,
         'products': all_products,
@@ -61,7 +63,7 @@ def products(request):
         'total_sum': total_sum,
     }
 
-    return render(request, 'mainapp/products.html', context=context)
+    return render(request, 'mainapp/products.html', context=content)
 
 
 def get_hot_product():
@@ -82,6 +84,9 @@ def contact(request):
 
 
 def show_category_products(request, category_id=None):
+
+    page = request.GET['page']
+
     links_menu = ProductCategory.objects.all().order_by('name')
 
     if category_id in (3, None):  # пока привяжимся к id категории "ВСЕ"
@@ -90,16 +95,30 @@ def show_category_products(request, category_id=None):
         all_products = Products.objects.filter(category=category_id)
 
     hot_product = get_hot_product()
+    active_category = get_object_or_404(ProductCategory, pk=category_id)
+
+    paginator = Paginator(all_products, 2)
+
+    try:
+        products_paginator = paginator.page(page)
+    except PageNotAnInteger:
+        products_paginator = paginator.page(1)
+    except EmptyPage:
+        products_paginator = paginator.page(paginator.num_pages)
 
     context = {
         'main_menu': main_menu,
         'links_menu': links_menu,
-        'products': all_products,
+        # 'products': all_products,
+        'products': products_paginator,
         'active_category_id': category_id,  # передаем для установки активного класса - active
         'hot_product': hot_product,
+        'active_category': active_category,
+        'page': page
     }
 
-    return render(request, 'mainapp/products.html', context=context)
+    # return render(request, 'mainapp/products.html', context=context)
+    return render(request, 'mainapp/products_list.html', context=context)
 
 
 def get_products():
